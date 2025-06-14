@@ -68,6 +68,7 @@ struct CustomerListView: View {
                     }) {
                         Image(systemName: "plus")
                     }
+                    .accessibilityIdentifier("Add Customer")
                 }
             }
             .sheet(isPresented: $showingAddCustomer) {
@@ -93,9 +94,3 @@ struct CustomerListView: View {
 //  CustomerListView(viewModel: viewModel)
 //}
  
-
-// Helper for alert
-struct MessageAlert: Identifiable {
-    let id = UUID()
-    let message: String
-}
