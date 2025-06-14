@@ -20,13 +20,15 @@ final class CustomerDetailViewModel: ObservableObject {
     @Published var toast: Toast? = nil
 
     let customer: Customer
-    
-    init(customer: Customer) {
+    private let apiManager: APIManager
+
+    init(customer: Customer, apiManager: APIManager = APIManager.shared) {
         self.customer = customer
         self.name = customer.name
         self.email = customer.email
         self.gender = customer.gender
         self.status = customer.status
+        self.apiManager = apiManager
     }
     
     func updateCustomer() async {
@@ -43,7 +45,7 @@ final class CustomerDetailViewModel: ObservableObject {
         let updatedCustomer = CustomerCreateRequest(name: name, email: email, gender: gender, status: status)
 
         do {
-            let _: Customer = try await APIManager.shared.put(endpoint: "/users/\(customer.id)", body: updatedCustomer)
+            let _: Customer = try await apiManager.put(endpoint: "/users/\(customer.id)", body: updatedCustomer)
             successMessage = "Customer updated successfully!"
             toast = Toast(style: .success, message: successMessage ?? "")
 

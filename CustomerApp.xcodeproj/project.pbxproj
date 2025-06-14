@@ -29,6 +29,23 @@
 		A68AE9C22DFCEE750096B899 /* CustomerAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CustomerAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A6145C902DFE104A0020B1BF /* Exceptions for "CustomerAppTests" folder in "CustomerApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Mocks/MockURLProtocol.swift,
+			);
+			target = A68AE9AF2DFCEE720096B899 /* CustomerApp */;
+		};
+		A6145C912DFE104A0020B1BF /* Exceptions for "CustomerAppTests" folder in "CustomerAppTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Mocks/MockURLProtocol.swift,
+			);
+			target = A68AE9C12DFCEE750096B899 /* CustomerAppTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A6639C4D2DFD200900281D65 /* CustomerAppUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -42,6 +59,10 @@
 		};
 		A68AE9C52DFCEE750096B899 /* CustomerAppTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A6145C902DFE104A0020B1BF /* Exceptions for "CustomerAppTests" folder in "CustomerApp" target */,
+				A6145C912DFE104A0020B1BF /* Exceptions for "CustomerAppTests" folder in "CustomerAppTests" target */,
+			);
 			path = CustomerAppTests;
 			sourceTree = "<group>";
 		};
