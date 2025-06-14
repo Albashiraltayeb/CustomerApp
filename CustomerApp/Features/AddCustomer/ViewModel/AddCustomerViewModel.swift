@@ -22,12 +22,12 @@ class AddCustomerViewModel: ObservableObject {
 
 
 
-    private let apiManager: APIManager
+    private let apiManager: APIManaging
     private let onSuccess: () -> Void
     private var cancellables = Set<AnyCancellable>()
 
 
-    init(apiManager: APIManager, onSuccess: @escaping () -> Void) {
+    init(apiManager: APIManaging = APIManager.shared, onSuccess: @escaping () -> Void) {
         self.apiManager = apiManager
         self.onSuccess = onSuccess
         

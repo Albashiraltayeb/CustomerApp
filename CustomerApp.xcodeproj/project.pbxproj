@@ -33,6 +33,8 @@
 		A6145C902DFE104A0020B1BF /* Exceptions for "CustomerAppTests" folder in "CustomerApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Mocks/APIManagerMock.swift,
+				Mocks/MockCustomerRepository.swift,
 				Mocks/MockURLProtocol.swift,
 			);
 			target = A68AE9AF2DFCEE720096B899 /* CustomerApp */;
@@ -40,6 +42,8 @@
 		A6145C912DFE104A0020B1BF /* Exceptions for "CustomerAppTests" folder in "CustomerAppTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Mocks/APIManagerMock.swift,
+				Mocks/MockCustomerRepository.swift,
 				Mocks/MockURLProtocol.swift,
 			);
 			target = A68AE9C12DFCEE750096B899 /* CustomerAppTests */;

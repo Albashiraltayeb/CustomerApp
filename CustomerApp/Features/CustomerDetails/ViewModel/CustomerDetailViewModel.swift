@@ -20,9 +20,9 @@ final class CustomerDetailViewModel: ObservableObject {
     @Published var toast: Toast? = nil
 
     let customer: Customer
-    private let apiManager: APIManager
+    private let apiManager: APIManaging
 
-    init(customer: Customer, apiManager: APIManager = APIManager.shared) {
+    init(customer: Customer, apiManager: APIManaging = APIManager.shared) {
         self.customer = customer
         self.name = customer.name
         self.email = customer.email

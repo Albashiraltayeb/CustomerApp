@@ -16,10 +16,12 @@ class CustomerListViewModel: ObservableObject {
     @Published var isOffline: Bool = false
     @Published var toast: Toast? = nil
 
-    let repository: CustomerRepository
+    private let repository: CustomerRepository
+    private let apiManager: APIManaging
 
-    init(repository: CustomerRepository) {
+    init(repository: CustomerRepository, apiManager: APIManaging = APIManager.shared) {
         self.repository = repository
+        self.apiManager = apiManager
     }
 
 
@@ -45,12 +47,9 @@ class CustomerListViewModel: ObservableObject {
     @MainActor
     func deleteCustomer(_ customer: Customer) async {
         do {
-            try await APIManager.shared.delete(endpoint: "/users/\(customer.id)")
+            try await apiManager.delete(endpoint: "/users/\(customer.id)")
 
-            // Refetch after deletion
             await fetchCustomers()
-
-            // Show success toast
             toast = Toast(style: .success, message: "Customer deleted successfully.")
         } catch let error as NetworkError {
             let message = error.userFriendlyMessage

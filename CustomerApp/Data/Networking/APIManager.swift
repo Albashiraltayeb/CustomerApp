@@ -133,6 +133,8 @@ final class APIManager {
     }
 }
 
+extension APIManager: APIManaging {}
+
 struct EmptyResponse: Decodable {}
 
 

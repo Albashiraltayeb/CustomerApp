@@ -12,7 +12,12 @@ final class Reachability {
 
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "ReachabilityMonitor")
+    
+#if DEBUG
+    var isConnected: Bool = true
+#else
     private(set) var isConnected: Bool = true
+#endif
 
     private init() {
         monitor.pathUpdateHandler = { [weak self] path in
