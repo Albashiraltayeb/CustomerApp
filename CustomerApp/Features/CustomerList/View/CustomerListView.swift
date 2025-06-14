@@ -79,6 +79,8 @@ struct CustomerListView: View {
                 )
             }
         }
+        .toastView(toast: $viewModel.toast)
+
     }
 }
 

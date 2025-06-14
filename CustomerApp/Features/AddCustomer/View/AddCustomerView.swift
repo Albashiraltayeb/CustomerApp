@@ -43,11 +43,6 @@ struct AddCustomerView: View {
                     }
                 }
 
-                if let error = viewModel.errorMessage {
-                    Text(error)
-                        .foregroundColor(.red)
-                }
-
                 if viewModel.isSubmitting {
                     ProgressView()
                 } else {
@@ -61,5 +56,6 @@ struct AddCustomerView: View {
             .navigationTitle("Add Customer")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .toastView(toast: $viewModel.toast)
     }
 }

@@ -54,34 +54,7 @@ struct CustomerDetailView: View {
                 }
             }
         }
-        .alert(isPresented: .constant(viewModel.errorMessage != nil || viewModel.successMessage != nil)) {
-            if viewModel.errorMessage != nil {
-                Alert(
-                    title: Text("Error"),
-                    message: Text(viewModel.errorMessage ?? ""),
-                    dismissButton: .default(Text("OK")) {
-                        viewModel.errorMessage = nil
-                    }
-                )
-            } else  {
-                Alert(
-                    title: Text("Success"),
-                    message: Text(viewModel.successMessage ?? ""),
-                    dismissButton: .default(Text("OK")) {
-                        viewModel.successMessage = nil
-                    }
-                )
-            }
-        }
-//        .alert(isPresented: .constant(viewModel.successMessage != nil)) {
-//            Alert(
-//                title: Text("Success"),
-//                message: Text(viewModel.successMessage ?? ""),
-//                dismissButton: .default(Text("OK")) {
-//                    viewModel.successMessage = nil
-//                }
-//            )
-//        }
+        .toastView(toast: $viewModel.toast)
     }
 }
 

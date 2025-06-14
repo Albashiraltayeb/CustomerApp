@@ -18,6 +18,8 @@ class AddCustomerViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isSubmitting = false
     @Published var isEmailValid: Bool = true
+    @Published var toast: Toast? = nil
+
 
 
     private let apiManager: APIManager
@@ -44,11 +46,13 @@ class AddCustomerViewModel: ObservableObject {
     func submit() async {
         guard !name.isEmpty, !email.isEmpty else {
             errorMessage = "Name and email are required."
+            toast = Toast(style: .error, message: errorMessage ?? "")
             return
         }
         
         guard isEmailValid else {
             errorMessage = "Please enter a valid email address."
+            toast = Toast(style: .error, message: errorMessage ?? "")
             return
         }
 
@@ -71,13 +75,14 @@ class AddCustomerViewModel: ObservableObject {
         } catch let error as NetworkError {
             if case .validationFailed(let data) = error,
                let message = try? decodeValidationError(from: data) {
-                errorMessage = message
+                toast = Toast(style: .error, message: message)
             } else {
                 errorMessage = error.userFriendlyMessage
+                toast = Toast(style: .error, message: errorMessage ?? "")
             }
         } catch {
-            // Handle any other unexpected errors here
             errorMessage = error.localizedDescription
+            toast = Toast(style: .error, message: errorMessage ?? "")
         }
 
 

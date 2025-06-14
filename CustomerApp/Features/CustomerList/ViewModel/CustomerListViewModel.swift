@@ -14,6 +14,7 @@ class CustomerListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var isOffline: Bool = false
+    @Published var toast: Toast? = nil
 
     let repository: CustomerRepository
 
@@ -27,11 +28,15 @@ class CustomerListViewModel: ObservableObject {
         errorMessage = nil
         isOffline = !Reachability.shared.isConnected
         customers.removeAll()
+        if isOffline {
+            toast = Toast(style: .error, message: "Offline Mode")
+        }
         do {
             customers = try await repository.fetchCustomers()
         } catch {
             customers = []
             errorMessage = "Unable to load customers."
+            toast = Toast(style: .error, message: errorMessage ?? "")
         }
 
         isLoading = false
