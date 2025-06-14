@@ -11,6 +11,8 @@ struct CustomerListView: View {
     @EnvironmentObject var router: NavigationRouter
     @StateObject var viewModel: CustomerListViewModel
     @State private var showingAddCustomer = false
+    @State private var customerToDelete: Customer?
+    @State private var showingDeleteAlert = false
 
     var body: some View {
         NavigationView {
@@ -27,6 +29,15 @@ struct CustomerListView: View {
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                             .accessibilityIdentifier("CustomerEmail_\(customer.id)")
+                    }
+                    }
+                .swipeActions {
+                    Button(role: .destructive) {
+                        Task {
+                            await viewModel.deleteCustomer(customer)
+                        }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
                     }
                 }
             }
@@ -59,14 +70,6 @@ struct CustomerListView: View {
                     }
                 }
             }
-            .alert(item: Binding(
-                get: {
-                    viewModel.errorMessage.map { MessageAlert(message: $0) }
-                },
-                set: { _ in viewModel.errorMessage = nil }
-            )) { alert in
-                Alert(title: Text("Notice"), message: Text(alert.message), dismissButton: .default(Text("OK")))
-            }
             .sheet(isPresented: $showingAddCustomer) {
                 AddCustomerView(
                     viewModel: AddCustomerViewModel(
@@ -78,6 +81,7 @@ struct CustomerListView: View {
                     )
                 )
             }
+            
         }
         .toastView(toast: $viewModel.toast)
 

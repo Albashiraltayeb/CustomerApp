@@ -42,6 +42,27 @@ class CustomerListViewModel: ObservableObject {
         isLoading = false
     }
     
+    @MainActor
+    func deleteCustomer(_ customer: Customer) async {
+        do {
+            try await APIManager.shared.delete(endpoint: "/users/\(customer.id)")
+
+            // Refetch after deletion
+            await fetchCustomers()
+
+            // Show success toast
+            toast = Toast(style: .success, message: "Customer deleted successfully.")
+        } catch let error as NetworkError {
+            let message = error.userFriendlyMessage
+            errorMessage = message
+            toast = Toast(style: .error, message: message)
+        } catch {
+            let message = "Unexpected error: \(error.localizedDescription)"
+            errorMessage = message
+            toast = Toast(style: .error, message: message)
+        }
+    }
+
     func reload() {
         Task {
             await fetchCustomers()

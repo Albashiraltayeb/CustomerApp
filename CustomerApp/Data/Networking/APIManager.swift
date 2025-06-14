@@ -92,8 +92,12 @@ final class APIManager {
         
 
         
-        guard !data.isEmpty else {
-            throw NetworkError.noData
+        if data.isEmpty {
+            if T.self == EmptyResponse.self {
+                return EmptyResponse() as! T
+            } else {
+                throw NetworkError.noData
+            }
         }
 
         do {
