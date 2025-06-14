@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CustomerListView: View {
     @StateObject var viewModel: CustomerListViewModel
+    @State private var showingAddCustomer = false
 
     var body: some View {
         NavigationView {
@@ -16,23 +17,42 @@ struct CustomerListView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(customer.name)
                         .font(.headline)
+                        .accessibilityIdentifier("CustomerName_\(customer.id)")
                     Text(customer.email)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
+                        .accessibilityIdentifier("CustomerEmail_\(customer.id)")
                 }
             }
+            .accessibilityIdentifier("CustomerList")
             .overlay {
                 if viewModel.isLoading {
                     ProgressView("Loading...")
+                        .accessibilityIdentifier("LoadingView")
+
                 } else if viewModel.customers.isEmpty {
                     Text("No customers available")
                         .foregroundColor(.gray)
+                        .accessibilityIdentifier("EmptyStateView")
+
                 }
             }
             .refreshable {
                 await viewModel.fetchCustomers()
             }
             .navigationTitle("Customers")
+            .task {
+                await viewModel.fetchCustomers()
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showingAddCustomer = true
+                    }) {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
             .alert(item: Binding(
                 get: {
                     viewModel.errorMessage.map { MessageAlert(message: $0) }
@@ -41,10 +61,27 @@ struct CustomerListView: View {
             )) { alert in
                 Alert(title: Text("Notice"), message: Text(alert.message), dismissButton: .default(Text("OK")))
             }
-
+            .sheet(isPresented: $showingAddCustomer) {
+                AddCustomerView(
+                    viewModel: AddCustomerViewModel(
+                        apiManager: viewModel.apiManager,
+                        onSuccess: {
+                            showingAddCustomer = false
+                            viewModel.reload() // refresh list
+                        }
+                    )
+                )
+            }
         }
     }
 }
+
+
+//#Preview {
+//    let viewModel = CustomerListViewModel(apiManager: APIManager(), cacheService: CustomerCacheService())
+//  CustomerListView(viewModel: viewModel)
+//}
+ 
 
 // Helper for alert
 struct MessageAlert: Identifiable {

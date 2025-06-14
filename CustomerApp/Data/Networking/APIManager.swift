@@ -47,16 +47,43 @@ final class APIManager {
 
         let (data, response) = try await session.data(for: request)
 
-        print(response)
+        if let jsonString = String(data: data, encoding: .utf8) {
+            print("Response JSON:\n\(jsonString)")
+        } else {
+            print("Failed to convert response data to string")
+        }
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkError.invalidResponse
         }
 
         guard 200..<300 ~= httpResponse.statusCode else {
-            throw NetworkError.serverError(httpResponse.statusCode)
+            switch httpResponse.statusCode {
+            case 400:
+                throw NetworkError.badRequest
+            case 401:
+                throw NetworkError.unauthorized
+            case 403:
+                throw NetworkError.forbidden
+            case 404:
+                throw NetworkError.notFound
+            case 405:
+                throw NetworkError.methodNotAllowed
+            case 415:
+                throw NetworkError.unsupportedMediaType
+            case 422:
+                throw NetworkError.validationFailed(data)
+            case 429:
+                throw NetworkError.tooManyRequests
+            case 500:
+                throw NetworkError.internalServerError
+            default:
+                throw NetworkError.serverError(httpResponse.statusCode)
+            }
         }
+        
 
+        
         guard !data.isEmpty else {
             throw NetworkError.noData
         }
@@ -97,10 +124,4 @@ final class APIManager {
 struct EmptyResponse: Decodable {}
 
 
-struct Customer: Codable, Identifiable {
-    let id: Int
-    var name: String
-    var email: String
-    var gender: String
-    var status: String
-}
+

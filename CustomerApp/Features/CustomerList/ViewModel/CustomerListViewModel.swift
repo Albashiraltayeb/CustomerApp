@@ -14,8 +14,8 @@ class CustomerListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    private let apiManager: APIManager
-    private let cacheService: CustomerCacheService
+    let apiManager: APIManager
+    let cacheService: CustomerCacheService
 
     init(apiManager: APIManager, cacheService: CustomerCacheService) {
         self.apiManager = apiManager

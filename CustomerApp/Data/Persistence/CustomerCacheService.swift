@@ -18,9 +18,7 @@ class CustomerCacheService {
 
     func saveCustomers(_ customers: [Customer]) throws {
         
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CustomerEntity.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        try context.execute(deleteRequest)
+        try clearData()
 
         for customer in customers {
             let entity = CustomerEntity(context: context)
@@ -44,5 +42,11 @@ class CustomerCacheService {
                      gender: $0.gender ?? "",
                      status: $0.status ?? "")
         }
+    }
+    //delete data
+    func clearData() throws {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CustomerEntity.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        try context.execute(deleteRequest)
     }
 }
