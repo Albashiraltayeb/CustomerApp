@@ -34,11 +34,19 @@ final class APIManager {
     func request<T: Decodable>(
         endpoint: String,
         method: String = "GET",
+        queryItems: [URLQueryItem]? = nil,
         body: Data? = nil
     ) async throws -> T {
-        guard let url = URL(string: baseURL + endpoint) else {
+        guard var components = URLComponents(string: baseURL + endpoint) else {
             throw NetworkError.invalidURL
         }
+
+        components.queryItems = queryItems
+
+        guard let url = components.url else {
+            throw NetworkError.invalidURL
+        }
+
 
         var request = URLRequest(url: url)
         request.httpMethod = method

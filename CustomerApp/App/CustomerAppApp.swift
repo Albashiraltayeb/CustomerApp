@@ -11,11 +11,13 @@ import SwiftUI
 struct CustomerApp: App {
     let persistence = PersistenceController.shared
     
+    @StateObject private var router = NavigationRouter()
+    
     init() {
         // Check for UI testing launch arguments
         if CommandLine.arguments.contains("--uitesting-clear-coredata") {
             
-           try? CustomerCacheService().clearData() // Implement this function to delete all CDCustomer entities
+            try? CustomerCacheService().clearData() // Implement this function to delete all CDCustomer entities
         }
         if CommandLine.arguments.contains("--uitesting-empty-customers") {
             // You'd need to mock your APIManager or Repository to return empty data
@@ -37,13 +39,23 @@ struct CustomerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            CustomerListView(
-                viewModel: CustomerListViewModel(
-                    repository:DefaultCustomerRepository(apiManager: APIManager.shared,
-                                                          cacheService: CustomerCacheService(),
-                                                         reachability: Reachability.shared),
+            NavigationStack(path: $router.path) {
+                CustomerListView(
+                    viewModel: CustomerListViewModel(
+                        repository:DefaultCustomerRepository(apiManager: APIManager.shared,
+                                                             cacheService: CustomerCacheService(),
+                                                             reachability: Reachability.shared),
+                    )
                 )
-            )
+                .navigationDestination(for: Route.self) { route in
+                    switch route {
+                    case .customerDetail(let customer):
+                        CustomerDetailView(viewModel: CustomerDetailViewModel(customer: customer))
+                    }
+                }
+                .environmentObject(router)
+                
+            }
         }
     }
 }

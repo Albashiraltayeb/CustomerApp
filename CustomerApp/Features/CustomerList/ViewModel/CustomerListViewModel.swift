@@ -26,7 +26,7 @@ class CustomerListViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         isOffline = !Reachability.shared.isConnected
-
+        customers.removeAll()
         do {
             customers = try await repository.fetchCustomers()
         } catch {

@@ -8,20 +8,26 @@
 import SwiftUI
 
 struct CustomerListView: View {
+    @EnvironmentObject var router: NavigationRouter
     @StateObject var viewModel: CustomerListViewModel
     @State private var showingAddCustomer = false
 
     var body: some View {
         NavigationView {
             List(viewModel.customers, id: \.id) { customer in
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(customer.name)
-                        .font(.headline)
-                        .accessibilityIdentifier("CustomerName_\(customer.id)")
-                    Text(customer.email)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .accessibilityIdentifier("CustomerEmail_\(customer.id)")
+                Button {
+                    router.navigate(to: .customerDetail(customer))
+                } label: {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(customer.name)
+                            .font(.headline)
+                            .accessibilityIdentifier("CustomerName_\(customer.id)")
+                            .foregroundColor(.black)
+                        Text(customer.email)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .accessibilityIdentifier("CustomerEmail_\(customer.id)")
+                    }
                 }
             }
             .accessibilityIdentifier("CustomerList")
