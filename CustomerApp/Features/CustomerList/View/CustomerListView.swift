@@ -64,7 +64,7 @@ struct CustomerListView: View {
             .sheet(isPresented: $showingAddCustomer) {
                 AddCustomerView(
                     viewModel: AddCustomerViewModel(
-                        apiManager: viewModel.apiManager,
+                        apiManager: APIManager.shared,
                         onSuccess: {
                             showingAddCustomer = false
                             viewModel.reload() // refresh list

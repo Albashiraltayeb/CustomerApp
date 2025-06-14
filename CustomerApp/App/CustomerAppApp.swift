@@ -39,8 +39,9 @@ struct CustomerApp: App {
         WindowGroup {
             CustomerListView(
                 viewModel: CustomerListViewModel(
-                    apiManager: APIManager(),
-                    cacheService: CustomerCacheService()
+                    repository:DefaultCustomerRepository(apiManager: APIManager.shared,
+                                                          cacheService: CustomerCacheService(),
+                                                         reachability: Reachability.shared),
                 )
             )
         }

@@ -13,38 +13,30 @@ class CustomerListViewModel: ObservableObject {
     @Published var customers: [Customer] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var isOffline: Bool = false
 
-    let apiManager: APIManager
-    let cacheService: CustomerCacheService
+    let repository: CustomerRepository
 
-    init(apiManager: APIManager, cacheService: CustomerCacheService) {
-        self.apiManager = apiManager
-        self.cacheService = cacheService
+    init(repository: CustomerRepository) {
+        self.repository = repository
     }
+
 
     func fetchCustomers() async {
         isLoading = true
         errorMessage = nil
+        isOffline = !Reachability.shared.isConnected
 
         do {
-            let remoteCustomers: [Customer] = try await apiManager.request(endpoint: "/users")
-            customers = remoteCustomers
-            try cacheService.saveCustomers(remoteCustomers)
+            customers = try await repository.fetchCustomers()
         } catch {
-            print("Failed to fetch remote: \(error.localizedDescription)")
-            errorMessage = "Couldn't fetch online. Showing cached data."
-
-            do {
-                customers = try cacheService.fetchCustomers()
-            } catch {
-                customers = []
-                errorMessage = "No data available offline."
-            }
+            customers = []
+            errorMessage = "Unable to load customers."
         }
 
         isLoading = false
     }
-
+    
     func reload() {
         Task {
             await fetchCustomers()
