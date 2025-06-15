@@ -39,6 +39,7 @@ struct CustomerListView: View {
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
+                    .accessibilityLabel("Delete") 
                 }
             }
             .accessibilityIdentifier("CustomerList")
