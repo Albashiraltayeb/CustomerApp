@@ -36,9 +36,9 @@ class CustomerListUITests_AddCustomerFlow: XCTestCase {
         let emailTextField = app.textFields["EmailField"]
         let submitButton = app.buttons["SubmitButton"]
 
-        XCTAssertTrue(nameTextField.exists, "Name text field not found (NameField).")
-        XCTAssertTrue(emailTextField.exists, "Email text field not found (EmailField).")
-        XCTAssertTrue(submitButton.exists, "Submit button not found (SubmitButton).")
+        XCTAssertTrue(nameTextField.exists, "Name text field")
+        XCTAssertTrue(emailTextField.exists, "Email text field")
+        XCTAssertTrue(submitButton.exists, "Submit button")
         submitButton.tap()
         nameTextField.tap()
         nameTextField.typeText("New Customer Via UI Test")
@@ -56,7 +56,8 @@ class CustomerListUITests_AddCustomerFlow: XCTestCase {
                 app.staticTexts["Active"].tap()
 
         submitButton.tap()
-
+        
+        XCTAssertTrue(customerList.waitForExistence(timeout: 10), "Customer list did not appear.")
 
     }
 }

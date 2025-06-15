@@ -20,16 +20,19 @@ struct CustomerListView: View {
                 Button {
                     router.navigate(to: .customerDetail(customer))
                 } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(customer.name)
-                            .font(.headline)
-                            .accessibilityIdentifier("CustomerName_\(customer.id)")
-                            .foregroundColor(.black)
-                        Text(customer.email)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                            .accessibilityIdentifier("CustomerEmail_\(customer.id)")
-                    }
+//                    VStack(alignment: .leading, spacing: 4) {
+//                        Text(customer.name)
+//                            .font(.headline)
+//                            .accessibilityIdentifier("CustomerName_\(customer.id)")
+//                            .foregroundColor(.black)
+//                        Text(customer.email)
+//                            .font(.subheadline)
+//                            .foregroundColor(.secondary)
+//                            .accessibilityIdentifier("CustomerEmail_\(customer.id)")
+//                    }
+                                     CustomerRowRepresentable(customer: customer)
+                        .frame(maxWidth: .infinity,minHeight: 40, alignment: .leading)
+                                         .contentShape(Rectangle())
                     }
                 .swipeActions {
                     Button(role: .destructive) {
