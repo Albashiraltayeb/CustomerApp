@@ -11,7 +11,6 @@ A simple iOS application built with SwiftUI, demonstrating core CRUD (Create, Re
     * [Cloning the Repository](#cloning-the-repository)
     * [Opening in Xcode](#opening-in-xcode)
     * [Building and Running](#building-and-running)
-* [Project Structure](#project-structure)
 * [Usage](#usage)
 * [Running UI Tests](#running-ui-tests)
 
